@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module display_task(input [6:0] x, y, input [8:4]sw, output reg [15:0] oled_data = 0);
+module display_task(input [6:0] x, y, input [8:5]sw, output reg [15:0] oled_data = 0);
     reg [1:0] color; // white, green, red, black
     
     // Green Lines
@@ -62,22 +62,14 @@ module display_task(input [6:0] x, y, input [8:4]sw, output reg [15:0] oled_data
                 color = num[6] ? 2'b11 : 2'b00;
             else if (sw[5])
                 color = num[5] ? 2'b11 : 2'b00;
-
-            if (!sw[8] && border)
-                color = 2'b10;
         end
 
-        else begin
-            if (sw[4])
-                color = 2'b01;
-            else
-                color = 2'b10;
-        end
+        if (!sw[8] && border)
+            color = 2'b10;
         
         case (color)
             2'b11: oled_data = 16'hFFFF;
             2'b10: oled_data = 16'h07E0;
-            2'b01: oled_data = 16'hF800;
             2'b00: oled_data = 16'h0000;
         endcase
     end

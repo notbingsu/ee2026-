@@ -41,5 +41,5 @@ module oled_indiv_task(
     
     pixel_index_to_xy xyconvert (.pixel_index(pixel_index), .x(x), .y(y));
 
-    display_task D_task (.x(x), .y(y), .sw(sw[8:4]), .oled_data(oled_data));
+    display_task D_task (.x(x), .y(y), .sw(sw[8:5]), .oled_data(oled_data));
 endmodule
