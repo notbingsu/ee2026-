@@ -23,38 +23,40 @@ module menu (
 
     // menu traversal
 	always @ (posedge clock) begin
-		// Left button
-		if (btnL && btnL_state == 2'b0)
-			btnL_state = 2'b01;
-		if (btnL_state == 2'b01) begin
-			if (!btnL) begin
-				release_count = release_count + 1;
-				if (release_count == 31'd6_250_000)
-					btnL_state = 2'b10;
+		if (machine_state == 3'd0) begin
+			// Left button
+			if (btnL && btnL_state == 2'b0)
+				btnL_state = 2'b01;
+			if (btnL_state == 2'b01) begin
+				if (!btnL) begin
+					release_count = release_count + 1;
+					if (release_count == 31'd6_250_000)
+						btnL_state = 2'b10;
+				end
+				else
+					release_count = 0;
 			end
-			else
-				release_count = 0;
-		end
-		if (btnL_state == 2'b10) begin
-			btnL_state = 2'b0;
-			menu_state <= (menu_state == 3'b001) ? 3'b001 : (menu_state - 3'd1);
-		end
+			if (btnL_state == 2'b10) begin
+				btnL_state = 2'b0;
+				menu_state <= (menu_state == 3'b001) ? 3'b001 : (menu_state - 3'd1);
+			end
 
-		// Right button
-		if (btnR && btnR_state == 2'b0)
-			btnR_state = 2'b01;
-		if (btnR_state == 2'b01) begin
-			if (!btnR) begin
-				release_count = release_count + 1;
-				if (release_count == 31'd6_250_000)
-					btnR_state = 2'b10;
+			// Right button
+			if (btnR && btnR_state == 2'b0)
+				btnR_state = 2'b01;
+			if (btnR_state == 2'b01) begin
+				if (!btnR) begin
+					release_count = release_count + 1;
+					if (release_count == 31'd6_250_000)
+						btnR_state = 2'b10;
+				end
+				else
+					release_count = 0;
 			end
-			else
-				release_count = 0;
-		end
-		if (btnR_state == 2'b10) begin
-			btnR_state = 2'b0;
-			menu_state <= (menu_state == 3'b111) ? 3'b111 : (menu_state + 3'd1);
+			if (btnR_state == 2'b10) begin
+				btnR_state = 2'b0;
+				menu_state <= (menu_state == 3'b111) ? 3'b111 : (menu_state + 3'd1);
+			end
 		end
 	end
 
