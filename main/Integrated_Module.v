@@ -29,6 +29,16 @@ module integrated_grp(
     // Oled wires
     wire [6:0] oled_x, oled_y;
     wire [15:0] oled_data;
+    // registers for oled control
+    wire [15:0] oled_state_0;
+    wire [15:0] oled_state_1;
+    wire [15:0] oled_state_2;
+    wire [15:0] oled_state_3;
+    wire [15:0] oled_state_4;
+    wire [15:0] oled_state_5;
+    wire [15:0] oled_state_6;
+    wire [15:0] oled_state_7;
+    wire [15:0] oled_state_8;
     
     // number displayed on oled as selected if applicable
     wire [3:0] num;
@@ -159,16 +169,6 @@ module integrated_grp(
         );
         
     // for menu selection
-    // registers for oled control
-    wire [15:0] oled_state_0;
-    wire [15:0] oled_state_1;
-    wire [15:0] oled_state_2;
-    wire [15:0] oled_state_3;
-    wire [15:0] oled_state_4;
-    wire [15:0] oled_state_5;
-    wire [15:0] oled_state_6;
-    wire [15:0] oled_state_7;
-    wire [15:0] oled_state_8;
 
     always @ (posedge clock) begin
         if (machine_state == 2'b0) begin
