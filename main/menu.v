@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module test (
+module menu (
 	input clock, btnL, btnR,
 	input [6:0] x, y,
 	output reg [15:0] oled_data = 0,
