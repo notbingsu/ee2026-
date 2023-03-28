@@ -208,8 +208,8 @@ module integrated_grp(
         end
 	end
 
-    oled_control control (.machine_state(machine_state), .oled_s0(oled_state_0), .oled_s1(oled_state_1), .oled_s2(oled_state_2), .oled_s3(oled_state_3), .oled_s4(oled_state_4), .oled_s5(oled_state_5), .oled_s6(oled_state_6), .oled_s7(oled_state_7), .oled_s8(oled_state_8), .oled_data(oled_data));
-    menu menu(.clock(clock), .btnL(btnL), .btnR(btnR), .x(oled_x), .y(oled_y), .oled_data(oled_state_0), .machine_state(machine_state), .menu_state(menu_state));
-    gif gif(.clock(clock), .x(oled_x), .y(oled_y), .oled_data(oled_state_7), .machine_state(machine_state));
+    oled_control (.machine_state(machine_state), .oled_s0(oled_state_0), .oled_s1(oled_state_1), .oled_s2(oled_state_2), .oled_s3(oled_state_3), .oled_s4(oled_state_4), .oled_s5(oled_state_5), .oled_s6(oled_state_6), .oled_s7(oled_state_7), .oled_s8(oled_state_8), .oled_data(oled_data));
+    menu (.clock(clock), .btnL(btnL), .btnR(btnR), .x(oled_x), .y(oled_y), .oled_data(oled_state_0), .machine_state(machine_state), .menu_state(menu_state));
+    gif (.clock(clock), .x(oled_x), .y(oled_y), .oled_data(oled_state_7), .machine_state(machine_state));
 
 endmodule
