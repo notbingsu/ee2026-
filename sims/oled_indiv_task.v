@@ -27,10 +27,6 @@ module oled_indiv_task(
     output reg [15:0] oled_data = 0
     );
 
-    wire clk6p25m;
-    // Can change to use common clock divider
-    clk_divider D_clk (.CLK(clock), .n(7), .clock_out(clk6p25m));
-
     reg [1:0] color; // white, green, red, black
     
     // Green Lines
