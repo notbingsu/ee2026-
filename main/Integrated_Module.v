@@ -104,7 +104,16 @@ module integrated_grp(
         .y(oled_y),
         .JC(JC)
         );
-        
+    
+    oled_indiv_task(
+        .clock(clock),
+        .sw(sw[15:0]),
+        .x(oled_x), 
+        .y(oled_y),
+        .machine_state(machine_state),
+        .oled_data(oled_state_4)
+    );
+
     segment_control(
         .clock(clock),
         .sw(sw[15]),

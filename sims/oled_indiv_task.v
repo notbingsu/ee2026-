@@ -22,24 +22,68 @@
 
 module oled_indiv_task(
     input clock, input [15:0] sw,
-    output [7:0] JC
+    input [6:0] x, y,
+    input [3:0] machine_state,
+    output reg [15:0] oled_data = 0
     );
 
     wire clk6p25m;
     // Can change to use common clock divider
     clk_divider D_clk (.CLK(clock), .n(7), .clock_out(clk6p25m));
 
-    wire frame_begin, sending_pixels, sample_pixel;
-    wire [12:0] pixel_index; // Goes from 0 to 6143
-    wire [15:0] oled_data;
-    wire [6:0] x, y;
-
-    Oled_Display D_Oled (.clk(clk6p25m), .reset(0),
-    .frame_begin(frame_begin), .sending_pixels(sending_pixels), .sample_pixel(sample_pixel),
-    .pixel_index(pixel_index), .pixel_data(oled_data),
-    .cs(JC[0]), .sdin(JC[1]), .sclk(JC[3]), .d_cn(JC[4]), .resn(JC[5]), .vccen(JC[6]), .pmoden(JC[7]));
+    reg [1:0] color; // white, green, red, black
     
-    pixel_index_to_xy xyconvert (.pixel_index(pixel_index), .x(x), .y(y));
+    // Green Lines
+    // sw[8] controls display of green lines
+    wire border1, border2, border;
+    assign border1 = ((x <= 59) && (y >= 57 && y <= 59));
+    assign border2 = ((x >= 57 && x <= 59) && (y <= 59));
+    assign border = border1 || border2;
 
-    display_task D_task (.x(x), .y(y), .sw(sw[8:5]), .oled_data(oled_data));
+    // We simulate a 7-segment display
+    wire [6:0] oled_seg;
+
+    assign oled_seg[0] = (x >= 15 && x <= 39) && (y >= 9 && y <= 13);
+    assign oled_seg[1] = (x >= 35 && x <= 39) && (y >= 9 && y <= 28);
+    assign oled_seg[2] = (x >= 35 && x <= 39) && (y >= 26 && y <= 45);
+    assign oled_seg[3] = (x >= 15 && x <= 39) && (y >= 41 && y <= 45);
+    assign oled_seg[4] = (x >= 15 && x <= 19) && (y >= 26 && y <= 45);
+    assign oled_seg[5] = (x >= 15 && x <= 19) && (y >= 9 && y <= 28);
+    assign oled_seg[6] = (x >= 15 && x <= 39) && (y >= 25 && y <= 29);
+
+    wire [9:0] num;
+
+    assign num[0] = oled_seg[0] || oled_seg[1] || oled_seg[2] || oled_seg[3] || oled_seg[4] || oled_seg[5];
+    assign num[1] = oled_seg[1] || oled_seg[2];
+    assign num[2] = oled_seg[0] || oled_seg[1] || oled_seg[3] || oled_seg[4] || oled_seg[6];
+    assign num[3] = oled_seg[0] || oled_seg[1] || oled_seg[2] || oled_seg[3] || oled_seg[6];
+    assign num[4] = oled_seg[1] || oled_seg[2] || oled_seg[5] || oled_seg[6];
+    assign num[5] = oled_seg[0] || oled_seg[2] || oled_seg[3] || oled_seg[5] || oled_seg[6];
+    assign num[6] = oled_seg[0] || oled_seg[2] || oled_seg[3] || oled_seg[4] || oled_seg[5] || oled_seg[6];
+    assign num[7] = oled_seg[0] || oled_seg[1] || oled_seg[2];
+    assign num[8] = oled_seg[0] || oled_seg[1] || oled_seg[2] || oled_seg[3] || oled_seg[4] || oled_seg[5] || oled_seg[6];
+    assign num[9] = oled_seg[0] || oled_seg[1] || oled_seg[2] || oled_seg[3] || oled_seg[5] || oled_seg[6];
+
+    always @ (*) begin
+        if (machine_state == 4'd4) begin
+            if (sw[7:5]) begin
+                if (sw[7])
+                    color = num[7] ? 2'b11 : 2'b00;
+                else if (sw[6])
+                    color = num[6] ? 2'b11 : 2'b00;
+                else if (sw[5])
+                    color = num[5] ? 2'b11 : 2'b00;
+            end
+
+            if (!sw[8] && border)
+                color = 2'b10;
+            
+            case (color)
+                2'b11: oled_data = 16'hFFFF;
+                2'b10: oled_data = 16'h07E0;
+                2'b00: oled_data = 16'h0000;
+                default: oled_data = 16'h0000;
+            endcase
+        end
+    end
 endmodule
