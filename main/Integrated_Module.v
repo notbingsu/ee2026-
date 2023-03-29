@@ -32,7 +32,7 @@ module integrated_grp(
     // registers for oled control
     // unused wires commented out
     wire [15:0] oled_state_0;
-    // wire [15:0] oled_state_1;
+    wire [15:0] oled_state_1;
     // wire [15:0] oled_state_2;
     wire [15:0] oled_state_3;
     wire [15:0] oled_state_4;
@@ -223,6 +223,7 @@ module integrated_grp(
     oled_control (
         .machine_state(machine_state),
         .oled_s0(oled_state_0),
+        .oled_s1(oled_state_1),
         .oled_s3(oled_state_3),
         .oled_s4(oled_state_4),
         .oled_s5(oled_state_5),
