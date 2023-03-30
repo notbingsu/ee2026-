@@ -34,6 +34,54 @@ module test (
             
     reg color_mode_1, color_mode_2 = 0;
 
+	always@(random_num_1) begin
+        random_x_1 = random_num_1 [7:0] % 95; //modulo to keep value within display range 
+        random_y_1 = random_num_1 [7:0] % 63;
+        random_x_2 = random_num_1 [15:8] % 95;  
+        random_y_2 = random_num_1 [15:8] % 63;
+        random_x_3 = random_num_1 [23:16] % 95;  
+        random_y_3 = random_num_1 [23:16] % 63;
+        random_x_4 = random_num_1 [31:24] % 95;  
+        random_y_4 = random_num_1 [31:24] % 63;
+        
+        if(random_num_1 > 1073741824)
+            color_mode_1 = 5;
+        else if(random_num_1 > 134217728)
+            color_mode_1 = 4;
+        else if(random_num_1 > 16777216)
+            color_mode_1 = 3;
+        else if(random_num_1 > 2097152)
+            color_mode_1 = 2;
+        else if(random_num_1 > 262144)
+            color_mode_1 = 1;
+        else
+            color_mode_1 = 0;
+    end
+    
+    always@(random_num_2) begin
+        random_x_5 = random_num_2 [7:0] % 95; //modulo to keep value within display range 
+        random_y_5 = random_num_2 [7:0] % 63;
+        random_x_6 = random_num_2 [15:8] % 95;  
+        random_y_6 = random_num_2 [15:8] % 63;
+        random_x_7 = random_num_2 [23:16] % 95;  
+        random_y_7 = random_num_2 [23:16] % 63;
+        random_x_8 = random_num_2 [31:24] % 95;  
+        random_y_8 = random_num_2 [31:24] % 63;
+        
+        if(random_num_2 > 1073741824)
+            color_mode_2 = 5;
+        else if(random_num_2 > 134217728)
+            color_mode_2 = 4;
+        else if(random_num_2 > 16777216)
+            color_mode_2 = 3;
+        else if(random_num_2 > 2097152)
+            color_mode_2 = 2;
+        else if(random_num_2 > 262144)
+            color_mode_2 = 1;
+        else
+            color_mode_2 = 0;
+    end
+
 	always @ (posedge clock) begin
 		if (machine_state == 4'd0) begin
 			// Left button
@@ -6267,51 +6315,28 @@ module test (
 				4'd9: if (sel9) oled_data = 16'b1111111111110101;
 			endcase
 
-			// Random Glitter Unit 1
-			random_x_1 = random_num_1 [7:0] % 95; //modulo to keep value within display range 
-			random_y_1 = random_num_1 [7:0] % 63;
-			random_x_2 = random_num_1 [15:8] % 95;  
-			random_y_2 = random_num_1 [15:8] % 63;
-			random_x_3 = random_num_1 [23:16] % 95;  
-			random_y_3 = random_num_1 [23:16] % 63;
-			random_x_4 = random_num_1 [31:24] % 95;  
-			random_y_4 = random_num_1 [31:24] % 63;
+			// Glitter Units
+			if((random_x_1 == x && random_y_1 == y) || (random_x_2 == x && random_y_2 == y) || (random_x_3 == x && random_y_3 == y) ||(random_x_4 == x && random_y_4 == y)) begin
+                case(color_mode_1)
+					0: oled_data = `MAGENTA;
+					1: oled_data = `GREEN;
+					2: oled_data = `BLUE;
+					3: oled_data = `YELLOW;
+					4: oled_data = `RED;
+					5: oled_data = `CYAN;
+                endcase
+            end
 			
-			if(random_num_1 > 1073741824)
-				color_mode_1 = 5;
-			else if(random_num_1 > 134217728)
-				color_mode_1 = 4;
-			else if(random_num_1 > 16777216)
-				color_mode_1 = 3;
-			else if(random_num_1 > 2097152)
-				color_mode_1 = 2;
-			else if(random_num_1 > 262144)
-				color_mode_1 = 1;
-			else
-				color_mode_1 = 0;
-
-			// Random Glitter Unit 2
-			random_x_5 = random_num_2 [7:0] % 95; //modulo to keep value within display range 
-			random_y_5 = random_num_2 [7:0] % 63;
-			random_x_6 = random_num_2 [15:8] % 95;  
-			random_y_6 = random_num_2 [15:8] % 63;
-			random_x_7 = random_num_2 [23:16] % 95;  
-			random_y_7 = random_num_2 [23:16] % 63;
-			random_x_8 = random_num_2 [31:24] % 95;  
-			random_y_8 = random_num_2 [31:24] % 63;
-			
-			if(random_num_2 > 1073741824)
-				color_mode_2 = 5;
-			else if(random_num_2 > 134217728)
-				color_mode_2 = 4;
-			else if(random_num_2 > 16777216)
-				color_mode_2 = 3;
-			else if(random_num_2 > 2097152)
-				color_mode_2 = 2;
-			else if(random_num_2 > 262144)
-				color_mode_2 = 1;
-			else
-				color_mode_2 = 0;
+       		else if((random_x_5 == x && random_y_5 == y) || (random_x_6 == x && random_y_6 == y) || (random_x_7 == x && random_y_7 == y) ||(random_x_8 == x && random_y_8 == y)) begin
+                case(color_mode_2)
+					0: oled_data = `CYAN;
+					1: oled_data = `YELLOW;
+					2: oled_data = `BLUE;
+					3: oled_data = `GREEN;
+					4: oled_data = `RED;
+					5: oled_data = `MAGENTA;
+                endcase
+            end
 
 			if (menu_state < 4'd6) begin
 				case ({x, y})
