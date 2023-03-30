@@ -243,8 +243,6 @@ module integrated_grp(
         .btnD(btnD),
         .x(oled_x),
         .y(oled_y),
-        .random_num_1(random_num_1),
-        .random_num_2(random_num_2),
         .oled_data(oled_state_0),
         .machine_state(machine_state),
         .menu_state(menu_state)
