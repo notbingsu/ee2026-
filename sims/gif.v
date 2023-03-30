@@ -7,7 +7,7 @@ module gif (input clock, input [6:0] x, y, input [3:0] machine_state, output reg
 	reg slow_clk = 1'b0;
 
 	always @ (*) begin
-		if (machine_state == 4'd7) begin
+		if (machine_state == 4'd9) begin
 			case ({frame_no, x, y})
 				18'b000100011000001000: oled_data = 16'b1001101111101011;
 				18'b000100011010001000: oled_data = 16'b1010010000001011;
