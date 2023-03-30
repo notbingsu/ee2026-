@@ -30,17 +30,16 @@ module integrated_grp(
     wire [6:0] oled_x, oled_y;
     wire [15:0] oled_data;
     // registers for oled control
-    wire [15:0] oled_state_0 = 0;
-    wire [15:0] oled_state_1 = 0;
-    wire [15:0] oled_state_2 = 0;
-    wire [15:0] oled_state_3 = 0;
-    wire [15:0] oled_state_4 = 0;
-    wire [15:0] oled_state_5 = 0;
-    wire [15:0] oled_state_6 = 0;
-    wire [15:0] oled_state_7 = 0;
-    wire [15:0] oled_state_8 = 0;
-    wire [15:0] oled_state_9 = 0;
-    wire [15:0] oled_state_10 = 0;
+    wire [15:0] oled_state_0;
+    wire [15:0] oled_state_1;
+    wire [15:0] oled_state_2;
+    wire [15:0] oled_state_3;
+    wire [15:0] oled_state_4;
+    wire [15:0] oled_state_5;
+    wire [15:0] oled_state_6;
+    wire [15:0] oled_state_7;
+    wire [15:0] oled_state_8;
+    wire [15:0] oled_state_9;
     
     // number displayed on oled as selected if applicable
     wire [3:0] num;
@@ -231,7 +230,6 @@ module integrated_grp(
         .oled_s7(oled_state_7),
         .oled_s8(oled_state_8),
         .oled_s9(oled_state_9),
-        .oled_s10(oled_state_10),
         .oled_data(oled_data)
         );
 
