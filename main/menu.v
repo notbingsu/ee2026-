@@ -3,8 +3,10 @@
 module menu (
 	input clock, btnL, btnR, btnU, btnD,
 	input [6:0] x, y,
-	output reg [15:0] oled_data = 0,
+    input [31:0] random_num_1,
+    input [31:0] random_num_2,
 	input [3:0] machine_state,
+	output reg [15:0] oled_data = 0,
 	output reg [3:0] menu_state = 3'd1
 	);
 
@@ -20,6 +22,13 @@ module menu (
 	reg [1:0] btnR_state = 0;
 	reg [1:0] btnU_state = 0;
 	reg [1:0] btnD_state = 0;
+
+	// Random Glitter Generator Registers
+	integer i; // used in for loops
+    integer random_x_1, random_y_1, random_x_2, random_y_2, random_x_3, random_y_3, random_x_4, random_y_4, 
+            random_x_5, random_y_5, random_x_6, random_y_6, random_x_7, random_y_7, random_x_8, random_y_8;
+            
+    reg color_mode_1, color_mode_2 = 0; //used to decide what color to show randomly
 
 	always @ (posedge clock) begin
 		if (machine_state == 4'd0) begin
@@ -95,6 +104,7 @@ module menu (
 
 	always @ (*) begin
 		if (machine_state == 4'b0) begin
+			// Menu Background Display
 			case ({x, y})
 				14'b00000000000000: oled_data = 16'b1111111111111111;
 				14'b00000010000000: oled_data = 16'b1111111111111111;
@@ -6242,6 +6252,7 @@ module menu (
 				14'b10111110111111: oled_data = 16'b1111111111111111;
 			endcase
 
+			// Menu Selection Display
 			case (menu_state)
 				4'd1: if (sel1) oled_data = 16'b1111111111110101;
 				4'd2: if (sel2) oled_data = 16'b1111111111110101;
@@ -6255,6 +6266,53 @@ module menu (
 				4'd10: if (sel5) oled_data = 16'b1111111111110101;
 			endcase
 
+			// Random Glitter Unit 1
+			random_x_1 = random_num_1 [7:0] % 95; //modulo to keep value within display range 
+			random_y_1 = random_num_1 [7:0] % 63;
+			random_x_2 = random_num_1 [15:8] % 95;  
+			random_y_2 = random_num_1 [15:8] % 63;
+			random_x_3 = random_num_1 [23:16] % 95;  
+			random_y_3 = random_num_1 [23:16] % 63;
+			random_x_4 = random_num_1 [31:24] % 95;  
+			random_y_4 = random_num_1 [31:24] % 63;
+			
+			if(random_num_1 > 1073741824)
+				color_mode_1 = 5;
+			else if(random_num_1 > 134217728)
+				color_mode_1 = 4;
+			else if(random_num_1 > 16777216)
+				color_mode_1 = 3;
+			else if(random_num_1 > 2097152)
+				color_mode_1 = 2;
+			else if(random_num_1 > 262144)
+				color_mode_1 = 1;
+			else
+				color_mode_1 = 0;
+
+			// Random Glitter Unit 2
+			random_x_5 = random_num_2 [7:0] % 95; //modulo to keep value within display range 
+			random_y_5 = random_num_2 [7:0] % 63;
+			random_x_6 = random_num_2 [15:8] % 95;  
+			random_y_6 = random_num_2 [15:8] % 63;
+			random_x_7 = random_num_2 [23:16] % 95;  
+			random_y_7 = random_num_2 [23:16] % 63;
+			random_x_8 = random_num_2 [31:24] % 95;  
+			random_y_8 = random_num_2 [31:24] % 63;
+			
+			if(random_num_2 > 1073741824)
+				color_mode_2 = 5;
+			else if(random_num_2 > 134217728)
+				color_mode_2 = 4;
+			else if(random_num_2 > 16777216)
+				color_mode_2 = 3;
+			else if(random_num_2 > 2097152)
+				color_mode_2 = 2;
+			else if(random_num_2 > 262144)
+				color_mode_2 = 1;
+			else
+				color_mode_2 = 0;
+
+			// Menu Icons Display
 			if (menu_state < 4'd6) begin
 				case ({x, y})
 					14'b00111110011010: oled_data = 16'b1111011100011001;
