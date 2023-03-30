@@ -18,7 +18,7 @@ module test (
 	
 	wire sel6 = (x >= 32 && x <= 47 && y >= 24 && y <= 39);
 	wire sel7 = (x >= 48 && x <= 63 && y >= 24 && y <= 39);
-	wire sel8 = (x >= 32 && x <= 47 && y >= 24 && y <= 39);
+	wire sel8 = (x >= 32 && x <= 47 && y >= 41 && y <= 56);
 	wire sel9 = (x >= 48 && x <= 63 && y >= 41 && y <= 56);
 
 	// Edge Detection
